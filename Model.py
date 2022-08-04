@@ -14,15 +14,13 @@ class CreditModel:
         print('Database loaded\n')
         self.feats = [f for f in self.df.columns if f not in ['TARGET','SK_ID_CURR','SK_ID_BUREAU','SK_ID_PREV','index']]
         print('Loading ML model...\n')
-        self.model = joblib.load('clf.pkl')
+        self.model = joblib.load('clf.joblib')
         self.explainer = shap.TreeExplainer(self.model)
         print('Model loaded\n')
         print('Loading analytical data...\n')
-        #self.shap_explainer = joblib.load('shap_comp.pkl')
-        self.sp_values = joblib.load('shap_exp_values.pkl')
-        self.sp_base_values = joblib.load('shap_exp_base_values.pkl')
-        #self.sp_data = joblib.load('shap_exp_data.pkl')
-        self.sp_feat_names = joblib.load('shap_exp_feat_names.pkl')
+        self.sp_values = joblib.load('shap_exp_values.joblib')
+        self.sp_base_values = joblib.load('shap_exp_base_values.joblib')
+        self.sp_feat_names = joblib.load('shap_exp_feat_names.joblib')
         print('Analytical data loaded\n')
     
     def predict_score(self, id_number):
@@ -34,5 +32,4 @@ class CreditModel:
 
     def explanation(self, id_number):
         rank = self.df[self.df['SK_ID_CURR'] == id_number].index[0]
-        #return self.shap_explainer[rank]
         return self.sp_values[rank], self.sp_base_values[rank], self.df.loc[rank, self.feats].values, self.sp_feat_names
