@@ -1,1 +1,1 @@
-web: uvicorn app:app --reload
+web: uvicorn --port 8000 --host https://credit-score-oc.herokuapp.com/ app:app
